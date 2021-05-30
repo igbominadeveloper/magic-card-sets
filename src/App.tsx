@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import Card from './components/Card/Card';
+import Loader from './components/Loader/Loader';
+
 import './App.scss';
 
 import { MagicSet, MagicCard, SelectedMagicSet } from './types';
@@ -9,10 +11,16 @@ import { getSets, getCards } from './services';
 
 function App() {
   const [magicSets, setMagicSets] = useState<Array<MagicSet>>([]);
+
   const [magicCards, setMagicCards] = useState<Array<MagicCard>>([]);
+
   const [selectedMagicSet, setSelectedMagicSet] = useState<SelectedMagicSet>({ code: '', name: '', releaseDate: '' });
+
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalItems, setTotalItems] = useState(1);
+
+  const [totalItems, setTotalItems] = useState(0);
+
+  const [fetchingCards, setFetchingCards] = useState(false);
 
   const totalPages = () => Math.round(totalItems / 10);
 
@@ -57,6 +65,7 @@ function App() {
 
   const fetchCards = () => {
     try {
+      setFetchingCards(true);
 
       getCards(selectedMagicSet.code, currentPage)
         .then((response) => {
@@ -69,8 +78,10 @@ function App() {
         .then((response: { cards: Array<MagicCard> }) => {
           setMagicCards(response.cards);
           localStorage.setItem('cards', JSON.stringify(response.cards));
+          setFetchingCards(false);
         });
     } catch (error) {
+      setFetchingCards(false);
       // set the
     }
   };
@@ -83,7 +94,7 @@ function App() {
     }
   };
 
-  const goToNextPage = () => {    
+  const goToNextPage = () => {
     if (currentPage < totalPages()) {
       setCurrentPage(currentPage + 1);
       fetchCards();
@@ -127,29 +138,46 @@ function App() {
           ))}
         </select>
 
-        <button type="submit">Gather</button>
+        <button disabled={fetchingCards} type="submit">
+          {fetchingCards ? 'Loading...' : 'Submit'}
+        </button>
       </form>
 
       <section className="App__cards">
-        {magicCards.map((magicCard: MagicCard) => (
-          <Card key={magicCard.id} {...magicCard} releaseDate={selectedMagicSet.releaseDate} />
-        ))}
+        {fetchingCards ? (
+          <div className="App__loader-container">
+            <Loader className="App__loader" />
+            <p>Loading cards...</p>
+          </div>
+        ) : magicCards.length === 0 ? (
+          <div className="">
+            <img src="src/empty-cards.png" alt="No Cards" className="App__empty-cards" />
+
+            <p>No cards yet. Select a set and click on submit</p>
+          </div>
+        ) : (
+          magicCards.map((magicCard: MagicCard) => (
+            <Card key={magicCard.id} {...magicCard} releaseDate={selectedMagicSet.releaseDate} />
+          ))
+        )}
       </section>
 
-      <section className="App__pagination">
-        <button className="App__pagination-control" data-testid="firstPage" onClick={goToFirstPage}>
-          First Page
-        </button>
-        <button className="App__pagination-control" data-testid="previousPage" onClick={goToPreviousPage}>
-          Previous Page
-        </button>
-        <button className="App__pagination-control" data-testid="nextPage" onClick={goToNextPage}>
-          Next Page
-        </button>
-        <button className="App__pagination-control" data-testid="lastPage" onClick={goToLastPage}>
-          Last Page
-        </button>
-      </section>
+      {fetchingCards ? null : magicCards.length > 0 ? (
+        <section className="App__pagination">
+          <button className="App__pagination-control" data-testid="firstPage" onClick={goToFirstPage}>
+            First Page
+          </button>
+          <button className="App__pagination-control" data-testid="previousPage" onClick={goToPreviousPage}>
+            Previous Page
+          </button>
+          <button className="App__pagination-control" data-testid="nextPage" onClick={goToNextPage}>
+            Next Page
+          </button>
+          <button className="App__pagination-control" data-testid="lastPage" onClick={goToLastPage}>
+            Last Page
+          </button>
+        </section>
+      ) : null}
     </div>
   );
 }
