@@ -1,0 +1,44 @@
+html {
+  box-sizing: border-box;
+
+  height: 100%;
+  margin: 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  font-family: Montserrat;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --color-black: #000;
+  --color-gray: #ccc;
+  --color-white: #fff;
+
+  --color-primary: var(--color-black);
+  --color-secondary: var(--color-white);
+  --text-color: var(--color-primary);
+
+  --font-md: 1rem;
+  --font-primary: Montserrat;
+}
+
+[data-theme='dark'] {
+  /* Variables for dark mode */
+  --color-primary: var(--color-white);
+  --color-secondary: var(--color-black);
+  --text-color: var(--color-secondary);
+}
