@@ -5,17 +5,16 @@ import './App.scss';
 
 import { MagicSet, MagicCard, SelectedMagicSet } from './types';
 
-import { cards } from '../fixtures.json';
-import { getSets } from './services';
+import { getSets, getCards } from './services';
 
 function App() {
   const [magicSets, setMagicSets] = useState<Array<MagicSet>>([]);
-  const [magicCards, setMagicCards] = useState<Array<MagicCard>>(cards);
+  const [magicCards, setMagicCards] = useState<Array<MagicCard>>([]);
   const [selectedMagicSet, setSelectedMagicSet] = useState<SelectedMagicSet>({ code: '', name: '', releaseDate: '' });
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(1);
 
-  const totalPages = () => totalItems / 10;
+  const totalPages = () => Math.round(totalItems / 10);
 
   const handleMagicSetSelection = (magicSetCode: string) => {
     const activeMagicSet = magicSets.find((magicSet: MagicSet) => magicSet.code === magicSetCode);
@@ -37,9 +36,39 @@ function App() {
             return response.json();
           }
         })
+        .then((response: { sets: Array<MagicSet> }) => {
+          const fetchedSets = response.sets;
+          setMagicSets(fetchedSets);
+          const { code, name, releaseDate } = fetchedSets[0];
+
+          const defaultMagicSet: SelectedMagicSet = {
+            code,
+            name,
+            releaseDate,
+          };
+          // we are setting the default selected set to the first one
+          setSelectedMagicSet(defaultMagicSet);
+          localStorage.setItem('sets', JSON.stringify(fetchedSets));
+        });
+    } catch (error) {
+      // set the
+    }
+  };
+
+  const fetchCards = () => {
+    try {
+
+      getCards(selectedMagicSet.code, currentPage)
         .then((response) => {
-          setMagicSets(response.sets);
-          localStorage.setItem('sets', JSON.stringify(response.sets));
+          if (response.ok) {
+            setTotalItems(Number(response.headers.get('total-count')));
+
+            return response.json();
+          }
+        })
+        .then((response: { cards: Array<MagicCard> }) => {
+          setMagicCards(response.cards);
+          localStorage.setItem('cards', JSON.stringify(response.cards));
         });
     } catch (error) {
       // set the
@@ -47,30 +76,49 @@ function App() {
   };
 
   const goToPreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+
+      fetchCards();
+    }
   };
 
-  const goToNextPage = () => {
-    if (currentPage < totalPages()) setCurrentPage(currentPage + 1);
+  const goToNextPage = () => {    
+    if (currentPage < totalPages()) {
+      setCurrentPage(currentPage + 1);
+      fetchCards();
+    }
   };
 
   const goToFirstPage = () => {
-    if (currentPage !== 1) setCurrentPage(1);
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+      fetchCards();
+    }
   };
 
   const goToLastPage = () => {
-    if (currentPage !== totalPages()) setCurrentPage(totalPages);
+    if (currentPage !== totalPages()) {
+      setCurrentPage(totalPages);
+      fetchCards();
+    }
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    fetchCards();
   };
 
   useEffect(() => {
     fetchSets();
-  }, [])
+  }, []);
 
   return (
     <div className="App">
       <p className="App__header">Select a set from the options here</p>
 
-      <form className="App__form">
+      <form className="App__form" onSubmit={(event: React.FormEvent<HTMLFormElement>) => handleSubmit(event)}>
         <select onChange={(event: React.ChangeEvent<HTMLSelectElement>) => handleMagicSetSelection(event.target.value)}>
           {magicSets.map((set: MagicSet) => (
             <option value={set.code} key={set.code}>
@@ -83,7 +131,7 @@ function App() {
       </form>
 
       <section className="App__cards">
-        {magicCards.slice(0, 10).map((magicCard: MagicCard) => (
+        {magicCards.map((magicCard: MagicCard) => (
           <Card key={magicCard.id} {...magicCard} releaseDate={selectedMagicSet.releaseDate} />
         ))}
       </section>
