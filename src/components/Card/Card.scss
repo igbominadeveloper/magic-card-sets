@@ -1,0 +1,57 @@
+.card {
+  width: 100%;
+
+  color: var(--text-color);
+  box-shadow: var(--box-shadow-2);
+
+  // border: 0.1rem solid var(--color-primary);
+
+  padding: 0.5rem;
+
+  &__header {
+    display: flex;
+
+    margin: -0.5rem;
+
+    border-bottom: 0.1rem solid var(--color-primary);
+
+    padding: 1rem;
+    // handle overflow of text to truncate with ellipsis
+    overflow-x: hidden;
+  }
+
+  &__name {
+    margin-left: 0.2rem;
+  }
+
+  &__setname {
+    margin-right: 0.2rem;
+  }
+
+  &__image {
+    height: 250px;
+    width: 200px;
+
+    display: block;
+    margin: 2rem auto;
+  }
+
+  &__footer {
+    margin: 0.5rem 0;
+
+    &--row {
+      display: flex;
+      align-items: center;
+
+      margin: 1rem 0;
+    }
+  }
+
+  &__release-date,
+  &__rarity,
+  &__types {
+    margin-right: 0.5rem;
+
+    font-weight: 600;
+  }
+}
