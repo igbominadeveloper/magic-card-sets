@@ -1,14 +1,15 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Card from './components/Card/Card';
 import './App.scss';
 
 import { MagicSet, MagicCard, SelectedMagicSet } from './types';
 
-import { cards, sets } from '../fixtures.json';
+import { cards } from '../fixtures.json';
+import { getSets } from './services';
 
 function App() {
-  const [magicSets, setMagicSets] = useState<Array<MagicSet>>(sets);
+  const [magicSets, setMagicSets] = useState<Array<MagicSet>>([]);
   const [magicCards, setMagicCards] = useState<Array<MagicCard>>(cards);
   const [selectedMagicSet, setSelectedMagicSet] = useState<SelectedMagicSet>({ code: '', name: '', releaseDate: '' });
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,6 +29,23 @@ function App() {
     });
   };
 
+  const fetchSets = () => {
+    try {
+      getSets()
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+        })
+        .then((response) => {
+          setMagicSets(response.sets);
+          localStorage.setItem('sets', JSON.stringify(response.sets));
+        });
+    } catch (error) {
+      // set the
+    }
+  };
+
   const goToPreviousPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
@@ -43,6 +61,10 @@ function App() {
   const goToLastPage = () => {
     if (currentPage !== totalPages()) setCurrentPage(totalPages);
   };
+
+  useEffect(() => {
+    fetchSets();
+  }, [])
 
   return (
     <div className="App">
