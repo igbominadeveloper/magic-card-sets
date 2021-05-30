@@ -1,204 +1,50 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
-import { MagicSet } from './types';
-
+import Card from './components/Card/Card';
 import './App.scss';
 
-const sets: Array<MagicSet> = [
-  {
-    code: '10E',
-    name: 'Tenth Edition',
-    type: 'core',
-    booster: [
-      'rare',
-      'uncommon',
-      'uncommon',
-      'uncommon',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-    ],
-    releaseDate: '2007-07-13',
-    block: 'Core Set',
-    onlineOnly: false,
-  },
-  {
-    code: '2ED',
-    name: 'Unlimited Edition',
-    type: 'core',
-    booster: [
-      'rare',
-      'uncommon',
-      'uncommon',
-      'uncommon',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-    ],
-    releaseDate: '1993-12-01',
-    block: 'Core Set',
-    onlineOnly: false,
-  },
-  {
-    code: '2XM',
-    name: 'Double Masters',
-    type: 'masters',
-    booster: [
-      'uncommon',
-      'uncommon',
-      'uncommon',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-    ],
-    releaseDate: '2020-08-07',
-    onlineOnly: false,
-  },
-  {
-    code: '3ED',
-    name: 'Revised Edition',
-    type: 'core',
-    booster: [
-      'rare',
-      'uncommon',
-      'uncommon',
-      'uncommon',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-    ],
-    releaseDate: '1994-04-01',
-    block: 'Core Set',
-    onlineOnly: false,
-  },
-  {
-    code: '4BB',
-    name: 'Fourth Edition Foreign Black Border',
-    type: 'core',
-    releaseDate: '1995-04-01',
-    onlineOnly: false,
-  },
-  {
-    code: '4ED',
-    name: 'Fourth Edition',
-    type: 'core',
-    booster: [
-      'rare',
-      'uncommon',
-      'uncommon',
-      'uncommon',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-    ],
-    releaseDate: '1995-04-01',
-    block: 'Core Set',
-    onlineOnly: false,
-  },
-  {
-    code: '5DN',
-    name: 'Fifth Dawn',
-    type: 'expansion',
-    booster: [
-      'rare',
-      'uncommon',
-      'uncommon',
-      'uncommon',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-    ],
-    releaseDate: '2004-06-04',
-    block: 'Mirrodin',
-    onlineOnly: false,
-  },
-  {
-    code: '5ED',
-    name: 'Fifth Edition',
-    type: 'core',
-    booster: [
-      'rare',
-      'uncommon',
-      'uncommon',
-      'uncommon',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-      'common',
-    ],
-    releaseDate: '1997-03-24',
-    block: 'Core Set',
-    onlineOnly: false,
-  },
-];
+import { MagicSet, MagicCard, SelectedMagicSet } from './types';
+
+import { cards, sets } from '../fixtures.json';
 
 function App() {
   const [magicSets, setMagicSets] = useState<Array<MagicSet>>(sets);
+  const [magicCards, setMagicCards] = useState<Array<MagicCard>>(cards);
+  const [selectedMagicSet, setSelectedMagicSet] = useState<SelectedMagicSet>({ code: '', name: '', releaseDate: '' });
+
+  const handleMagicSetSelection = (magicSetCode: string) => {
+    const activeMagicSet = magicSets.find((magicSet: MagicSet) => magicSet.code === magicSetCode);
+
+    if (!activeMagicSet) return;
+
+    setSelectedMagicSet({
+      code: activeMagicSet.code,
+      name: activeMagicSet.name,
+      releaseDate: activeMagicSet.releaseDate,
+    });
+  };
 
   return (
     <div className="App">
       <p className="App__header">Select a set from the options here</p>
 
       <form className="App__form">
-        <select>
+        <select onChange={(event: React.ChangeEvent<HTMLSelectElement>) => handleMagicSetSelection(event.target.value)}>
           {magicSets.map((set: MagicSet) => (
-            <option value={set.name} key={set.code}>{set.name}</option>
+            <option value={set.code} key={set.code}>
+              {set.name}
+            </option>
           ))}
         </select>
 
         <button type="submit">Gather</button>
       </form>
+
+      <section className="App__cards">
+        {magicCards.map((magicCard: MagicCard) => (
+          <Card key={magicCard.id} {...magicCard} releaseDate={selectedMagicSet.releaseDate} />
+        ))}
+      </section>
     </div>
   );
 }
