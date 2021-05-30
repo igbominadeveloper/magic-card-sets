@@ -38,6 +38,24 @@
       grid-template-columns: repeat(3, 1fr);
     }
   }
+
+  &__pagination {
+    display: flex;
+    justify-content: center;
+
+    height: 2.5rem;
+
+    margin: 2rem 0;
+
+    &-control {
+      margin: 0 0.5rem;
+      padding: 0.3rem 1rem;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+  }
 }
 
 select {

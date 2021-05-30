@@ -53,3 +53,8 @@ export interface SelectedMagicSet {
   code: string;
   releaseDate: string;
 }
+
+export interface PaginationControls {
+  limit: number;
+  currentPage: number;
+}

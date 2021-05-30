@@ -11,6 +11,10 @@ function App() {
   const [magicSets, setMagicSets] = useState<Array<MagicSet>>(sets);
   const [magicCards, setMagicCards] = useState<Array<MagicCard>>(cards);
   const [selectedMagicSet, setSelectedMagicSet] = useState<SelectedMagicSet>({ code: '', name: '', releaseDate: '' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(1);
+
+  const totalPages = () => totalItems / 10;
 
   const handleMagicSetSelection = (magicSetCode: string) => {
     const activeMagicSet = magicSets.find((magicSet: MagicSet) => magicSet.code === magicSetCode);
@@ -22,6 +26,22 @@ function App() {
       name: activeMagicSet.name,
       releaseDate: activeMagicSet.releaseDate,
     });
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages()) setCurrentPage(currentPage + 1);
+  };
+
+  const goToFirstPage = () => {
+    if (currentPage !== 1) setCurrentPage(1);
+  };
+
+  const goToLastPage = () => {
+    if (currentPage !== totalPages()) setCurrentPage(totalPages);
   };
 
   return (
@@ -41,9 +61,24 @@ function App() {
       </form>
 
       <section className="App__cards">
-        {magicCards.map((magicCard: MagicCard) => (
+        {magicCards.slice(0, 10).map((magicCard: MagicCard) => (
           <Card key={magicCard.id} {...magicCard} releaseDate={selectedMagicSet.releaseDate} />
         ))}
+      </section>
+
+      <section className="App__pagination">
+        <button className="App__pagination-control" data-testid="firstPage" onClick={goToFirstPage}>
+          First Page
+        </button>
+        <button className="App__pagination-control" data-testid="previousPage" onClick={goToPreviousPage}>
+          Previous Page
+        </button>
+        <button className="App__pagination-control" data-testid="nextPage" onClick={goToNextPage}>
+          Next Page
+        </button>
+        <button className="App__pagination-control" data-testid="lastPage" onClick={goToLastPage}>
+          Last Page
+        </button>
       </section>
     </div>
   );
