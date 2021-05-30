@@ -150,10 +150,10 @@ function App() {
             <p>Loading cards...</p>
           </div>
         ) : magicCards.length === 0 ? (
-          <div className="">
+          <div className="App__loader-container">
             <img src="src/empty-cards.png" alt="No Cards" className="App__empty-cards" />
 
-            <p>No cards yet. Select a set and click on submit</p>
+            <p>Select a set and click on submit</p>
           </div>
         ) : (
           magicCards.map((magicCard: MagicCard) => (
