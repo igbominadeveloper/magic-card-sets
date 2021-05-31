@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Loader: React.FC<{ className: string }> = ({ className }) => (
+const Loader: React.FC<{ className?: string }> = ({ className = '' }) => (
   <svg
     width="57"
     height="57"
@@ -8,6 +8,7 @@ const Loader: React.FC<{ className: string }> = ({ className }) => (
     xmlns="http://www.w3.org/2000/svg"
     className={className}
     stroke="currentColor"
+    data-testid="loader"
   >
     <g fill="none" fillRule="evenodd">
       <g transform="translate(1 1)" strokeWidth="2">
