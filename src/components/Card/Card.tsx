@@ -12,7 +12,7 @@ const Card: React.FC<MagicCard & { releaseDate: string }> = ({
   type,
   releaseDate,
 }) => (
-  <article className="card">
+  <article className="card" data-testid="magic-card">
     <header className="card__header">
       <p className="card__setname">{setName}</p> - <p className="card__name">{name}</p>
     </header>

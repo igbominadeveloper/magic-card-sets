@@ -22,7 +22,7 @@ function App() {
 
   const [fetchingCards, setFetchingCards] = useState(false);
 
-  const totalPages = () => Math.round(totalItems / 10);
+  const totalPages = () => Math.round(totalItems / 12);
 
   const handleMagicSetSelection = (magicSetCode: string) => {
     const activeMagicSet = magicSets.find((magicSet: MagicSet) => magicSet.code === magicSetCode);
@@ -127,10 +127,15 @@ function App() {
 
   return (
     <div className="App">
-      <p className="App__header">Select a set from the options here</p>
+      <p className="App__header" data-testid="header">
+        Select a set from the options here
+      </p>
 
       <form className="App__form" onSubmit={(event: React.FormEvent<HTMLFormElement>) => handleSubmit(event)}>
-        <select onChange={(event: React.ChangeEvent<HTMLSelectElement>) => handleMagicSetSelection(event.target.value)}>
+        <select
+          data-testid="select"
+          onChange={(event: React.ChangeEvent<HTMLSelectElement>) => handleMagicSetSelection(event.target.value)}
+        >
           {magicSets.map((set: MagicSet) => (
             <option value={set.code} key={set.code}>
               {set.name}
@@ -138,22 +143,22 @@ function App() {
           ))}
         </select>
 
-        <button disabled={fetchingCards} type="submit">
+        <button disabled={fetchingCards} type="submit" data-testid="fetch-button">
           {fetchingCards ? 'Loading...' : 'Submit'}
         </button>
       </form>
 
-      <section className="App__cards">
+      <section className="App__cards" data-testid="app-cards">
         {fetchingCards ? (
           <div className="App__loader-container">
-            <Loader className="App__loader" />
-            <p>Loading cards...</p>
+            <Loader className="App__loader" data-testid="page-loader" />
+            <p data-testid="page-loader-text">Loading cards...</p>
           </div>
         ) : magicCards.length === 0 ? (
           <div className="App__loader-container">
             <img src="src/empty-cards.png" alt="No Cards" className="App__empty-cards" />
 
-            <p>Select a set and click on submit</p>
+            <p data-testid="no-cards">Select a set and click on submit</p>
           </div>
         ) : (
           magicCards.map((magicCard: MagicCard) => (
@@ -164,17 +169,17 @@ function App() {
 
       {fetchingCards ? null : magicCards.length > 0 ? (
         <section className="App__pagination">
-          <button className="App__pagination-control" data-testid="firstPage" onClick={goToFirstPage}>
-            First Page
+          <button className="App__pagination-control" data-testid="firstpage" onClick={goToFirstPage}>
+            First
           </button>
-          <button className="App__pagination-control" data-testid="previousPage" onClick={goToPreviousPage}>
-            Previous Page
+          <button className="App__pagination-control" data-testid="previouspage" onClick={goToPreviousPage}>
+            Previous
           </button>
-          <button className="App__pagination-control" data-testid="nextPage" onClick={goToNextPage}>
-            Next Page
+          <button className="App__pagination-control" data-testid="nextpage" onClick={goToNextPage}>
+            Next
           </button>
-          <button className="App__pagination-control" data-testid="lastPage" onClick={goToLastPage}>
-            Last Page
+          <button className="App__pagination-control" data-testid="lastpage" onClick={goToLastPage}>
+            Last
           </button>
         </section>
       ) : null}

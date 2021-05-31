@@ -4,7 +4,8 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": false,
-    "esModuleInterop": true,
+    "sourceMap": true,
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -14,7 +15,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["@types/jest"]
+    "types": ["node", "vite/client", "@types/jest"]
   },
-  "include": ["./src", "./setupTests.ts"]
+  "include": ["./src", "./setupTests.ts", "node_modules/cypress"],
+  "exclude": ["node_modules"]
 }
