@@ -62,5 +62,6 @@ npm run test:unit / yarn test:unit
 ### Run E2E tests
 
 ```
-npm run test:e2e / yarn test:e2e
+Start your dev server first because the tests need it `npm run serve / yarn dev`
+then run `npm run test:e2e / yarn test:e2e`
 ```
