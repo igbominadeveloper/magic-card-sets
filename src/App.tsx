@@ -156,7 +156,11 @@ function App() {
           </div>
         ) : magicCards.length === 0 ? (
           <div className="App__loader-container">
-            <img src="src/empty-cards.png" alt="No Cards" className="App__empty-cards" />
+            <img
+              src="https://res.cloudinary.com/igbominadeveloper/image/upload/v1622460554/empty-cards_q1wxcw.png"
+              alt="No Cards"
+              className="App__empty-cards"
+            />
 
             <p data-testid="no-cards">Select a set and click on Gather</p>
           </div>
