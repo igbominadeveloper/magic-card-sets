@@ -10,6 +10,8 @@ describe('App Component', () => {
     cy.get('[data-testid="fetch-button"]').click();
     cy.get('[data-testid="fetch-button"]').contains('Loading...');
 
+    cy.get('[data-testid=theme-toggler]').click();
+
     cy.get('[data-testid="page-loader-text"]').contains('Loading cards...');
 
     cy.wait(2000);
@@ -35,6 +37,8 @@ describe('App Component', () => {
 
     cy.get('[data-testid="app-cards"]').children().should('have.length', 12);
 
+    cy.get('[data-testid=theme-toggler]').click();
+
     cy.scrollTo('bottom', {
       duration: 1000,
       easing: 'swing',
@@ -57,6 +61,8 @@ describe('App Component', () => {
     });
     cy.get('[data-testid="nextpage"]').click();
     cy.wait(1500);
+
+    cy.get('[data-testid=theme-toggler]').click();
 
     cy.scrollTo('bottom', {
       duration: 1000,

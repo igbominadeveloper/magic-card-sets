@@ -53,6 +53,9 @@ describe('Card Component', () => {
 
     const image = screen.getByRole('img');
 
-    expect(image).toHaveAttribute('src', '/src/blank-scroll.svg');
+    expect(image).toHaveAttribute(
+      'src',
+      'https://res.cloudinary.com/igbominadeveloper/image/upload/v1622461559/blank-scroll_zpyocn.svg',
+    );
   });
 });
