@@ -213,7 +213,7 @@ function App() {
         </section>
       ) : null}
 
-      <button className="App__theme-toggler" onClick={switchTheme}>
+      <button className="App__theme-toggler" data-testid="theme-toggler" onClick={switchTheme}>
         <svg width="24" height="24" viewBox="0 0 24 24">
           <defs>
             <path
