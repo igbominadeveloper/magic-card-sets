@@ -17,7 +17,12 @@ const Card: React.FC<MagicCard & { releaseDate: string }> = ({
       <p className="card__setname">{setName}</p> - <p className="card__name">{name}</p>
     </header>
 
-    <img src={imageUrl || '/src/blank-scroll.svg'} alt={`${name} image`} className="card__image" loading="lazy" />
+    <img
+      src={imageUrl || 'https://res.cloudinary.com/igbominadeveloper/image/upload/v1622461559/blank-scroll_zpyocn.svg'}
+      alt={`${name} image`}
+      className="card__image"
+      loading="lazy"
+    />
 
     <footer className="card__footer">
       <div className="card__footer--row">
