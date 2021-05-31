@@ -3,9 +3,9 @@ describe('App Component', () => {
     cy.visit('/');
 
     cy.get('[data-testid="header"]').contains('Select a set from the options here');
-    cy.get('[data-testid="no-cards"]').contains('Select a set and click on submit');
+    cy.get('[data-testid="no-cards"]').contains('Select a set and click on Gather');
 
-    cy.get('[data-testid="fetch-button"]').contains('Submit');
+    cy.get('[data-testid="fetch-button"]').contains('Gather');
 
     cy.get('[data-testid="fetch-button"]').click();
     cy.get('[data-testid="fetch-button"]').contains('Loading...');
