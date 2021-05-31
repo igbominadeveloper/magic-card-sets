@@ -21,6 +21,9 @@ body {
   font-family: Montserrat;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background: var(--color-secondary);
+  color: var(--color-primary);
 }
 
 :root {
