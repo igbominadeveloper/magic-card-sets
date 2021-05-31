@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["node", "vite/client", "@types/jest"]
+    "types": ["vite/client", "@types/jest"]
   },
   "include": ["./src", "./setupTests.ts", "node_modules/cypress"],
   "exclude": ["node_modules"]

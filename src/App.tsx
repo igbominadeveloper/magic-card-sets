@@ -144,7 +144,7 @@ function App() {
         </select>
 
         <button disabled={fetchingCards} type="submit" data-testid="fetch-button">
-          {fetchingCards ? 'Loading...' : 'Submit'}
+          {fetchingCards ? 'Loading...' : 'Gather'}
         </button>
       </form>
 
@@ -158,7 +158,7 @@ function App() {
           <div className="App__loader-container">
             <img src="src/empty-cards.png" alt="No Cards" className="App__empty-cards" />
 
-            <p data-testid="no-cards">Select a set and click on submit</p>
+            <p data-testid="no-cards">Select a set and click on Gather</p>
           </div>
         ) : (
           magicCards.map((magicCard: MagicCard) => (
